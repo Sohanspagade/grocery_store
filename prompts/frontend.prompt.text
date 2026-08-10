@@ -1,0 +1,1293 @@
+ACT AS A SENIOR REACT FRONTEND DEVELOPER.
+
+You are building the frontend for an existing backend project called:
+
+"SmartCart AI – Grocery Management & AI Shopping Platform"
+
+IMPORTANT:
+The backend ALREADY EXISTS.
+
+Backend technology:
+- Python
+- FastAPI
+- MongoDB Atlas
+- OpenRouter AI API
+
+DO NOT modify or rebuild the backend unless required to fix CORS.
+
+Your task is ONLY to build the React frontend and connect it to the existing FastAPI backend.
+
+========================================================
+1. FRONTEND TECHNOLOGY
+========================================================
+
+Use:
+
+- React
+- Vite
+- JavaScript
+- CSS Modules (.module.css)
+- Axios
+- React Router
+- Lucide React icons
+
+DO NOT USE:
+
+- Tailwind CSS
+- Bootstrap
+- Material UI
+- Chakra UI
+- Ant Design
+
+All styling must use CSS Modules.
+
+Example:
+
+Home.jsx
+Home.module.css
+
+ProductCard.jsx
+ProductCard.module.css
+
+========================================================
+2. EXISTING BACKEND
+========================================================
+
+The FastAPI backend runs on:
+
+http://localhost:8000
+
+Swagger:
+
+http://localhost:8000/docs
+
+The frontend Vite development server normally runs on:
+
+http://localhost:5173
+
+Use an environment variable:
+
+VITE_API_URL=http://localhost:8000
+
+Create:
+
+.env
+
+with:
+
+VITE_API_URL=http://localhost:8000
+
+Create:
+
+.env.example
+
+with:
+
+VITE_API_URL=http://localhost:8000
+
+NEVER hardcode the API URL throughout components.
+
+Use one centralized Axios client.
+
+========================================================
+3. IMPORTANT: VERIFY CORS
+========================================================
+
+Before considering the frontend complete, verify the frontend-to-FastAPI connection.
+
+The FastAPI backend must allow:
+
+http://localhost:5173
+
+The backend CORS configuration should support:
+
+http://localhost:5173
+http://localhost:3000
+http://localhost:8080
+http://localhost:8081
+
+For development use:
+
+allow_origins=[
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://localhost:8081"
+]
+
+allow_credentials=True
+
+allow_methods=["*"]
+
+allow_headers=["*"]
+
+DO NOT use "*" for allow_origins when allow_credentials=True.
+
+========================================================
+4. VERIFY CORS CONNECTION
+========================================================
+
+Do NOT simply assume CORS works.
+
+Actually verify the connection.
+
+First test:
+
+GET
+
+http://localhost:8000/api/health
+
+Expected:
+
+{
+    "status": "ok",
+    "service": "SmartCart Backend"
+}
+
+Then test the frontend calling the health endpoint using Axios.
+
+Create:
+
+src/services/api.js
+
+Use:
+
+axios.create({
+    baseURL: import.meta.env.VITE_API_URL
+})
+
+Create a health service:
+
+GET /api/health
+
+Display connection status somewhere during development.
+
+Example:
+
+● Backend Connected
+
+or
+
+● Backend Offline
+
+Use different visual states.
+
+If CORS fails:
+
+DO NOT hide the error.
+
+Show the actual error in the browser console and clearly identify:
+
+"FastAPI CORS configuration is blocking http://localhost:5173"
+
+If necessary, provide the exact backend CORS change required.
+
+========================================================
+5. PROJECT STRUCTURE
+========================================================
+
+Create:
+
+frontend/
+│
+├── src/
+│   │
+│   ├── components/
+│   │   ├── Header/
+│   │   │   ├── Header.jsx
+│   │   │   └── Header.module.css
+│   │   │
+│   │   ├── ProductCard/
+│   │   │   ├── ProductCard.jsx
+│   │   │   └── ProductCard.module.css
+│   │   │
+│   │   ├── CategoryCard/
+│   │   │   ├── CategoryCard.jsx
+│   │   │   └── CategoryCard.module.css
+│   │   │
+│   │   └── Loading/
+│   │       ├── Loading.jsx
+│   │       └── Loading.module.css
+│   │
+│   ├── pages/
+│   │   ├── Home/
+│   │   │   ├── Home.jsx
+│   │   │   └── Home.module.css
+│   │   │
+│   │   ├── Products/
+│   │   │   ├── Products.jsx
+│   │   │   └── Products.module.css
+│   │   │
+│   │   ├── ProductDetails/
+│   │   │   ├── ProductDetails.jsx
+│   │   │   └── ProductDetails.module.css
+│   │   │
+│   │   ├── Cart/
+│   │   │   ├── Cart.jsx
+│   │   │   └── Cart.module.css
+│   │   │
+│   │   ├── Login/
+│   │   │   ├── Login.jsx
+│   │   │   └── Login.module.css
+│   │   │
+│   │   └── AIAssistant/
+│   │       ├── AIAssistant.jsx
+│   │       └── AIAssistant.module.css
+│   │
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── productService.js
+│   │   ├── cartService.js
+│   │   ├── authService.js
+│   │   └── aiService.js
+│   │
+│   ├── context/
+│   │   └── CartContext.jsx
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+│
+├── .env
+├── .env.example
+├── package.json
+└── vite.config.js
+
+Keep the architecture simple.
+
+Do NOT over-engineer it.
+
+========================================================
+6. DESIGN REFERENCE
+========================================================
+
+Use the uploaded grocery UI image as the visual reference.
+
+IMPORTANT:
+
+Do NOT copy the exact website branding, text, logo, or assets.
+
+Use only its visual design language.
+
+Design characteristics to reproduce:
+
+- Fresh grocery aesthetic
+- White background
+- Dark/medium green primary color
+- Yellow promotional elements
+- Rounded cards
+- Soft shadows
+- Clean modern typography
+- Large hero section
+- Grocery product imagery
+- Circular category cards
+- Green CTA buttons
+- Yellow discount badges
+- Spacious layout
+- Professional e-commerce appearance
+
+Use a design system:
+
+Primary green:
+#16845B
+
+Dark green:
+#0D6B49
+
+Yellow:
+#F8C515
+
+Light green:
+#EAF7F0
+
+Background:
+#FFFFFF
+
+Light gray:
+#F7F7F5
+
+Text:
+#202020
+
+Muted text:
+#777777
+
+Use CSS variables in index.css.
+
+Do not use excessive gradients.
+
+========================================================
+7. HEADER
+========================================================
+
+Build a responsive header inspired by the reference.
+
+Top promotional strip:
+
+"Call Us: +123-456-789"
+
+"Sign up and GET 25% OFF for your first order."
+
+"Sign up now"
+
+Use yellow background.
+
+Main navigation:
+
+Logo:
+
+SmartCart
+
+Add a small grocery/cart icon.
+
+Location:
+
+"New York, USA"
+
+Replace location later if needed.
+
+Search bar:
+
+"Search for products..."
+
+Search icon.
+
+Actions:
+
+Wishlist
+Cart
+User
+
+Navigation:
+
+Home
+Shop
+Fruits
+Vegetables
+Beverages
+About Us
+
+Button:
+
+"Browse All Categories"
+
+Make header responsive.
+
+On mobile:
+
+Show hamburger menu.
+
+========================================================
+8. HOME PAGE
+========================================================
+
+Create:
+
+/
+
+Sections:
+
+1. Hero
+2. Categories
+3. Featured Products
+4. Discount Banner
+5. Popular Products
+
+Do NOT create too many sections.
+
+Keep the first version minimal.
+
+========================================================
+9. HERO SECTION
+========================================================
+
+Create a two-column hero.
+
+Left:
+
+Small badge:
+
+"The Best Online Grocery Store"
+
+Heading:
+
+"Your One-Stop Shop
+for Quality Groceries"
+
+Highlight:
+
+"Quality Groceries"
+
+Use green.
+
+Description:
+
+"Fresh groceries delivered to your doorstep with simple, smart shopping."
+
+Buttons:
+
+"Shop Now"
+
+"View All Products"
+
+Add trust indicators:
+
+"4.8 Ratings+"
+
+"Trusted by 75K+ Customers"
+
+Right:
+
+Use a free grocery-related image.
+
+Use a free image source such as Unsplash.
+
+Do not use copyrighted assets from the reference image.
+
+Image should show:
+
+- Grocery shopping
+- Fresh vegetables
+- Grocery basket
+- Person shopping
+
+Make image responsive.
+
+========================================================
+10. CATEGORY SECTION
+========================================================
+
+Heading:
+
+"Featured Categories"
+
+Subtitle:
+
+"Explore our grocery categories"
+
+Display circular category cards.
+
+Categories:
+
+Vegetables
+Fresh Fruits
+Milk & Eggs
+Bakery
+House Hold
+Dry Fruits
+
+Each card:
+
+- Circular light background
+- Relevant image/icon
+- Category name
+- Product count
+
+Example:
+
+Vegetables
+52 Products
+
+Clicking a category should navigate to:
+
+/products?category=Vegetables
+
+========================================================
+11. FEATURED PRODUCTS
+========================================================
+
+Connect to:
+
+GET /api/products
+
+Do NOT hardcode products in React.
+
+Display the products returned by FastAPI.
+
+Create ProductCard component.
+
+Each card should display:
+
+Product image
+Discount badge
+Wishlist icon
+Category
+Product name
+Unit
+Rating
+Current price
+Original price
+Add button
+
+Example:
+
+Fresh Apples
+
+★ 4.8
+
+1 kg
+
+₹180
+₹220
+
+[ Add ]
+
+Use Indian Rupees.
+
+Format prices using:
+
+Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR"
+})
+
+========================================================
+12. PRODUCT API CONNECTION
+========================================================
+
+Use:
+
+GET /api/products
+
+For product details:
+
+GET /api/products/{id}
+
+Never directly call axios inside every component.
+
+Use:
+
+src/services/productService.js
+
+Example:
+
+getProducts()
+getProduct(id)
+searchProducts(query)
+getProductsByCategory(category)
+
+========================================================
+13. PRODUCTS PAGE
+========================================================
+
+Route:
+
+/products
+
+Display:
+
+Page heading:
+
+"All Groceries"
+
+Search bar
+
+Category filter
+
+Price filter
+
+Sort:
+
+Price Low to High
+Price High to Low
+Newest
+
+Product grid.
+
+Connect everything to the backend.
+
+Do not implement filtering only on the frontend if the backend already supports it.
+
+Use backend query parameters where appropriate.
+
+========================================================
+14. PRODUCT DETAILS
+========================================================
+
+Route:
+
+/products/:id
+
+Display:
+
+Large image
+Product name
+Description
+Category
+Rating
+Price
+Original price
+Stock
+Unit
+
+Quantity selector:
+
+-
+
+1
+
++
+
+Button:
+
+"Add to Cart"
+
+If stock is 0:
+
+"Out of Stock"
+
+Disable Add to Cart.
+
+========================================================
+15. CART
+========================================================
+
+Route:
+
+/cart
+
+Use backend cart API.
+
+Display:
+
+Product
+Price
+Quantity
+Subtotal
+
+Controls:
+
+-
++
+
+Remove
+
+Summary:
+
+Subtotal
+Delivery
+Discount
+Total
+
+Use:
+
+GET /api/cart/{user_id}
+
+Add:
+
+POST /api/cart
+
+Update:
+
+PUT /api/cart/{user_id}/{product_id}
+
+Delete:
+
+DELETE /api/cart/{user_id}/{product_id}
+
+Do not create fake cart calculations if the backend already returns totals.
+
+========================================================
+16. LOGIN
+========================================================
+
+Route:
+
+/login
+
+Simple login form:
+
+Email
+Password
+
+Button:
+
+Login
+
+Connect:
+
+POST /api/auth/login
+
+Do not implement complicated authentication.
+
+Store returned user/session information appropriately for this development project.
+
+After successful login:
+
+navigate to /
+
+Display user name in header.
+
+========================================================
+17. AI ASSISTANT
+========================================================
+
+Create:
+
+/ai-assistant
+
+Minimal chat interface.
+
+Design:
+
+Left:
+
+"SmartCart AI"
+
+"Your personal grocery assistant."
+
+Chat messages.
+
+Input:
+
+"Ask something like: I need groceries for breakfast for 4 people"
+
+Button:
+
+Send
+
+Connect:
+
+POST /api/ai/chat
+
+Request:
+
+{
+    "user_id": "...",
+    "message": "I need groceries for breakfast for 4 people"
+}
+
+Display AI response.
+
+Show:
+
+Typing/loading state.
+
+If AI API fails:
+
+Show:
+
+"AI assistant is temporarily unavailable."
+
+Do not expose API keys.
+
+The frontend must NEVER call OpenRouter directly.
+
+All AI requests go:
+
+React
+↓
+FastAPI
+↓
+OpenRouter
+
+========================================================
+18. DISCOUNT BANNER
+========================================================
+
+Create one simple promotional section inspired by the reference.
+
+Text:
+
+"Summer Discount"
+
+"Get 20% off selected groceries."
+
+Button:
+
+"Shop Now"
+
+Use:
+
+green + yellow + light grocery imagery.
+
+Do not create a real countdown initially.
+
+Keep it static.
+
+========================================================
+19. RESPONSIVE DESIGN
+========================================================
+
+Must work on:
+
+Desktop:
+1440px
+
+Laptop:
+1024px
+
+Tablet:
+768px
+
+Mobile:
+390px
+
+At mobile:
+
+- Header becomes compact
+- Search moves below header
+- Hero becomes one column
+- Product grid becomes 2 columns
+- Categories become horizontal scroll
+- Cart remains accessible
+- AI assistant becomes full width
+
+Do not allow horizontal page overflow.
+
+========================================================
+20. LOADING STATES
+========================================================
+
+When fetching products:
+
+Show skeleton cards or simple loading animation.
+
+Do NOT show a blank page.
+
+========================================================
+21. ERROR STATES
+========================================================
+
+If backend unavailable:
+
+Display:
+
+"Unable to connect to SmartCart backend."
+
+"Make sure FastAPI is running on http://localhost:8000"
+
+Provide Retry button.
+
+If products API fails:
+
+Show proper error state.
+
+========================================================
+22. CORS VERIFICATION
+========================================================
+
+This is mandatory.
+
+When running the frontend:
+
+npm run dev
+
+It should run on:
+
+http://localhost:5173
+
+The frontend should call:
+
+http://localhost:8000/api/health
+
+Verify that the browser allows the request.
+
+If the request fails due to CORS, inspect the browser error.
+
+Do NOT simply claim that CORS works.
+
+Test it.
+
+If backend CORS must be modified, update the FastAPI backend's CORS configuration to include:
+
+http://localhost:5173
+
+Then restart FastAPI.
+
+========================================================
+23. API CONNECTION TEST COMPONENT
+========================================================
+
+Create a small development-only component:
+
+BackendStatus
+
+It should call:
+
+GET /api/health
+
+Display:
+
+● Backend Connected
+
+when successful.
+
+Display:
+
+● Backend Offline
+
+when unsuccessful.
+
+Keep it visually small.
+
+This allows us to immediately verify frontend/backend communication.
+
+========================================================
+24. CART CONTEXT
+========================================================
+
+Create:
+
+CartContext.jsx
+
+It should provide:
+
+cart
+addToCart
+removeFromCart
+updateQuantity
+clearCart
+cartCount
+
+Keep it simple.
+
+Do not build a complicated global state system.
+
+========================================================
+25. AXIOS CONFIGURATION
+========================================================
+
+Create:
+
+src/services/api.js
+
+Use:
+
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
+
+Export it.
+
+All backend calls must use this instance.
+
+========================================================
+26. ERROR INTERCEPTOR
+========================================================
+
+Add a simple Axios response interceptor.
+
+If:
+
+401
+
+handle authentication appropriately.
+
+If:
+
+500
+
+show server error.
+
+Do not expose technical stack traces to users.
+
+========================================================
+27. IMAGE HANDLING
+========================================================
+
+Use free grocery-related images.
+
+Prefer:
+
+Unsplash
+
+Use remote URLs initially.
+
+Create a fallback image if a URL fails.
+
+Do not make image loading break the layout.
+
+========================================================
+28. ICONS
+========================================================
+
+Use Lucide React.
+
+Use icons such as:
+
+ShoppingCart
+Heart
+User
+Search
+MapPin
+ChevronDown
+Menu
+ArrowRight
+Plus
+Minus
+Trash2
+Star
+Sparkles
+
+Do not use random Unicode symbols for UI icons.
+
+========================================================
+29. CODE QUALITY
+========================================================
+
+Use reusable components.
+
+Avoid:
+
+Huge App.jsx
+Repeated product card markup
+Repeated Axios code
+Inline CSS
+Global CSS for component-specific styling
+
+Use:
+
+CSS Modules
+
+Example:
+
+import styles from "./ProductCard.module.css";
+
+========================================================
+30. DO NOT USE TAILWIND
+========================================================
+
+This is mandatory.
+
+Do not install:
+
+tailwindcss
+
+Do not create:
+
+tailwind.config.js
+
+Do not use:
+
+className="bg-green-500 ..."
+
+Use CSS Modules.
+
+========================================================
+31. ROUTING
+========================================================
+
+Create:
+
+/
+
+Home
+
+/products
+
+Products
+
+/products/:id
+
+Product Details
+
+/cart
+
+Cart
+
+/login
+
+Login
+
+/ai-assistant
+
+AI Assistant
+
+Use React Router.
+
+========================================================
+32. MINIMAL VERSION
+========================================================
+
+Do NOT build:
+
+Admin dashboard
+Payment gateway
+Order tracking UI
+Complex authentication
+Wishlist persistence
+Notifications system
+Reviews system
+Advanced AI planner
+
+These can be added later.
+
+The first version must focus on:
+
+✓ Home
+✓ Products
+✓ Product Details
+✓ Login
+✓ Cart
+✓ AI Assistant
+✓ FastAPI connection
+✓ CORS verification
+
+========================================================
+33. BACKEND ROUTES AVAILABLE
+========================================================
+
+The existing backend provides:
+
+Authentication:
+
+POST /api/auth/register
+POST /api/auth/login
+
+Products:
+
+GET /api/products
+GET /api/products/{id}
+POST /api/products
+PUT /api/products/{id}
+DELETE /api/products/{id}
+
+Categories:
+
+GET /api/categories
+POST /api/categories
+PUT /api/categories/{id}
+DELETE /api/categories/{id}
+
+Cart:
+
+POST /api/cart
+GET /api/cart/{user_id}
+PUT /api/cart/{user_id}/{product_id}
+DELETE /api/cart/{user_id}/{product_id}
+
+Orders:
+
+POST /api/orders
+GET /api/orders/{user_id}
+GET /api/orders/detail/{order_id}
+
+AI:
+
+POST /api/ai/chat
+POST /api/ai/shopping-list
+POST /api/ai/recommendations
+POST /api/ai/search
+
+Health:
+
+GET /api/health
+GET /api/health/db
+
+Use these exact routes.
+
+Do not invent different endpoints.
+
+========================================================
+34. API FALLBACK BEHAVIOR
+========================================================
+
+Do NOT silently replace backend data with fake hardcoded data.
+
+If backend is unavailable:
+
+show an error state.
+
+Do not create fake products and pretend they came from the backend.
+
+========================================================
+35. FINAL TESTING
+========================================================
+
+After implementation:
+
+1. Run:
+
+npm install
+
+2. Run:
+
+npm run dev
+
+3. Open:
+
+http://localhost:5173
+
+4. Test:
+
+GET /api/health
+
+5. Verify:
+
+Backend Connected
+
+6. Test:
+
+GET /api/products
+
+7. Verify products appear.
+
+8. Test product details.
+
+9. Test login.
+
+10. Test cart.
+
+11. Test AI assistant.
+
+12. Open browser DevTools.
+
+13. Check Console.
+
+14. Check Network tab.
+
+15. Confirm requests go to:
+
+http://localhost:8000
+
+16. Confirm no CORS errors.
+
+17. Fix any errors before finishing.
+
+========================================================
+36. FINAL RESPONSE
+========================================================
+
+When finished, report:
+
+Frontend URL:
+http://localhost:5173
+
+Backend URL:
+http://localhost:8000
+
+Swagger:
+http://localhost:8000/docs
+
+CORS:
+PASS or FAIL
+
+Product API:
+PASS or FAIL
+
+Login API:
+PASS or FAIL
+
+Cart API:
+PASS or FAIL
+
+AI API:
+PASS or FAIL
+
+Also list any backend changes made for CORS.
+
+IMPORTANT:
+
+Do not tell me that something works unless you actually tested it.
+
+DO NOT BUILD THE ADMIN PANEL.
+
+DO NOT BUILD A BACKEND.
+
+DO NOT USE TAILWIND CSS.
+
+BUILD ONLY THE MINIMAL REACT FRONTEND AND CONNECT IT TO THE EXISTING FASTAPI BACKEND.

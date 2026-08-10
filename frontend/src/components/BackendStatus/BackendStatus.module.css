@@ -1,0 +1,29 @@
+.statusContainer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  background-color: var(--bg-color);
+}
+
+.dot {
+  font-size: 1rem;
+}
+
+.connected {
+  color: var(--primary-green);
+  border: 1px solid var(--primary-green);
+}
+
+.offline {
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}

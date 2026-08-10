@@ -1,0 +1,158 @@
+.productsPage {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: var(--light-gray);
+  border-radius: var(--border-radius-full);
+  padding: 8px 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.searchIcon {
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: white;
+  border: 1px solid #eaeaea;
+  border-radius: var(--border-radius-md);
+  padding: 24px;
+}
+
+.filterSection {
+  margin-bottom: 32px;
+}
+
+.filterSection:last-child {
+  margin-bottom: 0;
+}
+
+.filterTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.radioLabel input {
+  accent-color: var(--primary-green);
+  cursor: pointer;
+}
+
+.priceInputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.priceInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #eaeaea;
+  border-radius: var(--border-radius-sm);
+  outline: none;
+}
+
+.priceInput:focus {
+  border-color: var(--primary-green);
+}
+
+.sortSelect {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  background-color: white;
+}
+
+.main {
+  flex: 1;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: var(--light-gray);
+  border-radius: var(--border-radius-md);
+  color: var(--text-muted);
+}
+
+.resetBtn {
+  margin-top: 16px;
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius-full);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .content {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+  }
+}
