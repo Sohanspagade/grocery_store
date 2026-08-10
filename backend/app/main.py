@@ -10,6 +10,13 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.get("/", tags=["Root"])
+def read_root():
+    return {
+        "message": "Welcome to the SmartCart AI Backend API!",
+        "docs": "Visit /docs for the API documentation."
+    }
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
