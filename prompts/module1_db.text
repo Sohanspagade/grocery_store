@@ -1,0 +1,1146 @@
+ACT AS A SENIOR BACKEND ENGINEER.
+
+Your task is to build ONLY the backend for a project called:
+
+"SmartCart AI – Grocery Management & AI Shopping API"
+
+DO NOT BUILD ANY FRONTEND.
+
+The backend must be a complete, minimal but fully functional REST API that can be tested using Swagger UI, Postman, or curl.
+
+========================================================
+1. CORE REQUIREMENTS
+========================================================
+
+Technology:
+
+- Python 3.11+
+- FastAPI
+- Uvicorn
+- MongoDB Atlas
+- PyMongo
+- Pydantic
+- python-dotenv
+- OpenRouter API
+- HTTPX
+
+Database:
+
+MongoDB Atlas
+
+AI:
+
+OpenRouter API
+
+The OpenRouter API key is ALREADY AVAILABLE in the project's .env file.
+
+DO NOT ask me for the API key.
+
+DO NOT hardcode the API key anywhere.
+
+DO NOT create a frontend.
+
+========================================================
+2. IMPORTANT PASSWORD REQUIREMENT
+========================================================
+
+For this development project:
+
+DO NOT hash passwords.
+
+Store the password directly in MongoDB.
+
+Login should compare:
+
+provided_password == stored_password
+
+DO NOT use:
+
+bcrypt
+passlib
+argon2
+hashlib
+
+Do not introduce password hashing.
+
+IMPORTANT:
+This is intentionally requested for this development/demo project.
+Do not silently change this requirement.
+
+========================================================
+3. PROJECT STRUCTURE
+========================================================
+
+Create this backend structure:
+
+smartcart-backend/
+│
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   │
+│   ├── config/
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   │
+│   ├── database/
+│   │   ├── __init__.py
+│   │   └── mongodb.py
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   ├── product.py
+│   │   ├── category.py
+│   │   ├── cart.py
+│   │   ├── order.py
+│   │   └── ai.py
+│   │
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   ├── product.py
+│   │   ├── category.py
+│   │   ├── cart.py
+│   │   ├── order.py
+│   │   └── ai.py
+│   │
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── users.py
+│   │   ├── products.py
+│   │   ├── categories.py
+│   │   ├── cart.py
+│   │   ├── orders.py
+│   │   ├── admin.py
+│   │   └── ai.py
+│   │
+│   ├── services/
+│   │   ├── __init__.py
+│   │   └── openrouter.py
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       └── helpers.py
+│
+├── .env
+├── .env.example
+├── .gitignore
+├── requirements.txt
+└── README.md
+
+Keep the architecture simple.
+
+Do not over-engineer the project.
+
+========================================================
+4. ENVIRONMENT VARIABLES
+========================================================
+
+The existing .env file contains the OpenRouter API key.
+
+Support these variables:
+
+MONGODB_URI=
+MONGODB_DATABASE=smartcart
+
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL=
+
+PORT=8000
+
+If OPENROUTER_MODEL is not provided, use a reasonable OpenRouter model that supports chat completion.
+
+NEVER print API keys.
+
+NEVER commit .env.
+
+Create .env.example:
+
+MONGODB_URI=your_mongodb_atlas_connection_string
+MONGODB_DATABASE=smartcart
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=your_model
+PORT=8000
+
+========================================================
+5. MONGODB ATLAS CONNECTION
+========================================================
+
+Connect FastAPI to MongoDB Atlas using:
+
+MONGODB_URI
+
+Use PyMongo.
+
+Create:
+
+app/database/mongodb.py
+
+The database module must:
+
+- Connect to MongoDB Atlas
+- Expose the database
+- Expose collections
+- Handle connection errors
+- Ping MongoDB during startup
+
+Use:
+
+client.admin.command("ping")
+
+When the server starts, print:
+
+"MongoDB Atlas connected successfully"
+
+If connection fails, print a clear error.
+
+Do not crash with an unclear traceback.
+
+========================================================
+6. DATABASE
+========================================================
+
+Database name:
+
+smartcart
+
+Collections:
+
+users
+products
+categories
+cart_items
+orders
+ai_conversations
+
+========================================================
+7. USER MODEL
+========================================================
+
+User document:
+
+{
+    "_id": ObjectId,
+    "name": "Sohan",
+    "email": "sohan@example.com",
+    "password": "123456",
+    "role": "customer",
+    "created_at": datetime
+}
+
+Roles:
+
+customer
+admin
+
+DO NOT hash password.
+
+========================================================
+8. AUTHENTICATION ROUTES
+========================================================
+
+Create:
+
+POST /api/auth/register
+
+Request:
+
+{
+    "name": "Sohan",
+    "email": "sohan@example.com",
+    "password": "123456"
+}
+
+Response:
+
+{
+    "message": "User registered successfully",
+    "user": {
+        "id": "...",
+        "name": "Sohan",
+        "email": "sohan@example.com",
+        "role": "customer"
+    }
+}
+
+Before registering:
+
+Check whether email already exists.
+
+Return HTTP 400 if email already exists.
+
+--------------------------------------------------------
+
+POST /api/auth/login
+
+Request:
+
+{
+    "email": "sohan@example.com",
+    "password": "123456"
+}
+
+Compare the password directly with MongoDB.
+
+Response:
+
+{
+    "message": "Login successful",
+    "user": {
+        "id": "...",
+        "name": "Sohan",
+        "email": "...",
+        "role": "customer"
+    }
+}
+
+For this minimal backend, do not implement complex authentication.
+
+However, create a simple token/session mechanism if needed for protected routes.
+
+Keep it simple.
+
+========================================================
+9. USER ROUTES
+========================================================
+
+GET /api/users
+
+Return all users.
+
+Do NOT return passwords in API responses.
+
+GET /api/users/{user_id}
+
+Return a single user.
+
+DELETE /api/users/{user_id}
+
+Delete a user.
+
+========================================================
+10. CATEGORY CRUD
+========================================================
+
+Create:
+
+POST /api/categories
+
+GET /api/categories
+
+GET /api/categories/{category_id}
+
+PUT /api/categories/{category_id}
+
+DELETE /api/categories/{category_id}
+
+Category:
+
+{
+    "name": "Dairy",
+    "description": "Milk and dairy products"
+}
+
+========================================================
+11. PRODUCT CRUD
+========================================================
+
+This is one of the most important modules.
+
+Create:
+
+POST /api/products
+
+Request:
+
+{
+    "name": "Amul Curd",
+    "description": "Fresh curd",
+    "category": "Dairy",
+    "price": 40,
+    "original_price": 50,
+    "unit": "500g",
+    "stock": 25,
+    "image_url": "https://example.com/curd.jpg",
+    "rating": 4.5
+}
+
+GET /api/products
+
+Support:
+
+?page=1
+&limit=20
+&search=
+&category=
+&min_price=
+&max_price=
+&sort=
+
+Example:
+
+GET /api/products?search=milk
+
+GET /api/products?category=Dairy
+
+GET /api/products?min_price=20&max_price=100
+
+GET /api/products?sort=price_asc
+
+GET /api/products?sort=price_desc
+
+GET /api/products/{product_id}
+
+PUT /api/products/{product_id}
+
+PATCH /api/products/{product_id}/stock
+
+DELETE /api/products/{product_id}
+
+Validate:
+
+price >= 0
+original_price >= 0
+stock >= 0
+rating between 0 and 5
+
+========================================================
+12. PRODUCT SEARCH
+========================================================
+
+Implement normal database search.
+
+Example:
+
+GET /api/products/search?q=curd
+
+Search:
+
+name
+description
+category
+
+Use case-insensitive matching.
+
+Do not use AI for normal search.
+
+========================================================
+13. CART
+========================================================
+
+Create cart functionality.
+
+POST /api/cart
+
+Request:
+
+{
+    "user_id": "...",
+    "product_id": "...",
+    "quantity": 2
+}
+
+If product already exists in user's cart:
+
+increase quantity instead of creating duplicate cart item.
+
+GET:
+
+GET /api/cart/{user_id}
+
+Return:
+
+product
+quantity
+price
+subtotal
+
+PUT:
+
+PUT /api/cart/{user_id}/{product_id}
+
+Request:
+
+{
+    "quantity": 3
+}
+
+DELETE:
+
+DELETE /api/cart/{user_id}/{product_id}
+
+DELETE:
+
+DELETE /api/cart/{user_id}
+
+Clear entire cart.
+
+Prevent quantity <= 0.
+
+Prevent adding more than available stock.
+
+========================================================
+14. CART CALCULATION
+========================================================
+
+For each cart:
+
+subtotal = price * quantity
+
+Return:
+
+{
+    "items": [...],
+    "subtotal": 500,
+    "delivery_fee": 40,
+    "discount": 0,
+    "total": 540
+}
+
+If subtotal >= 500:
+
+delivery_fee = 0
+
+Otherwise:
+
+delivery_fee = 40
+
+========================================================
+15. ORDER CREATION
+========================================================
+
+POST /api/orders
+
+Request:
+
+{
+    "user_id": "...",
+    "delivery_address": "Bangalore, Karnataka",
+    "payment_method": "COD"
+}
+
+When creating order:
+
+1. Get user's cart.
+2. Verify products still exist.
+3. Verify stock.
+4. Calculate total.
+5. Create order.
+6. Create order items.
+7. Reduce product stock.
+8. Clear cart.
+
+Order status:
+
+pending
+
+Order document:
+
+{
+    "_id": ObjectId,
+    "user_id": "...",
+    "items": [...],
+    "subtotal": 500,
+    "delivery_fee": 40,
+    "total": 540,
+    "delivery_address": "...",
+    "payment_method": "COD",
+    "status": "pending",
+    "created_at": datetime
+}
+
+========================================================
+16. ORDER ROUTES
+========================================================
+
+POST /api/orders
+
+GET /api/orders/{user_id}
+
+GET /api/orders/detail/{order_id}
+
+PATCH /api/orders/{order_id}/status
+
+Possible statuses:
+
+pending
+confirmed
+packed
+out_for_delivery
+delivered
+cancelled
+
+DELETE /api/orders/{order_id}
+
+Only allow cancellation when status is:
+
+pending
+confirmed
+
+========================================================
+17. ADMIN ROUTES
+========================================================
+
+Create minimal admin functionality.
+
+GET /api/admin/dashboard
+
+Return:
+
+total_users
+total_products
+total_orders
+total_revenue
+low_stock_products
+
+Low stock:
+
+stock <= 5
+
+GET:
+
+/api/admin/orders
+
+Return all orders.
+
+PATCH:
+
+/api/admin/orders/{order_id}/status
+
+GET:
+
+/api/admin/low-stock
+
+Return products where stock <= 5.
+
+========================================================
+18. OPENROUTER AI INTEGRATION
+========================================================
+
+IMPORTANT:
+
+The OpenRouter API key is already available in .env.
+
+Read it using environment variables.
+
+Do not hardcode it.
+
+Create:
+
+app/services/openrouter.py
+
+Use HTTPX.
+
+OpenRouter endpoint:
+
+https://openrouter.ai/api/v1/chat/completions
+
+Send:
+
+Authorization:
+Bearer OPENROUTER_API_KEY
+
+Content-Type:
+application/json
+
+Use the model specified by:
+
+OPENROUTER_MODEL
+
+========================================================
+19. AI CHAT ROUTE
+========================================================
+
+Create:
+
+POST /api/ai/chat
+
+Request:
+
+{
+    "user_id": "...",
+    "message": "I need groceries for breakfast for 4 people"
+}
+
+The backend should:
+
+1. Receive user message.
+2. Retrieve relevant grocery products from MongoDB.
+3. Build context.
+4. Send context + user request to OpenRouter.
+5. Return AI response.
+6. Save conversation to ai_conversations.
+
+Response:
+
+{
+    "message": "Here is a suggested breakfast grocery list...",
+    "conversation_id": "..."
+}
+
+========================================================
+20. AI SYSTEM PROMPT
+========================================================
+
+Use a system prompt similar to:
+
+"You are SmartCart AI, a helpful grocery shopping assistant.
+
+You help users:
+- find grocery products
+- create shopping lists
+- recommend products
+- plan grocery purchases
+- suggest products within a budget
+
+Only recommend products that exist in the provided database context.
+
+Do not invent product names or prices.
+
+If the requested product is unavailable, clearly tell the user.
+
+Prices are in Indian Rupees (INR).
+
+Be concise and practical."
+
+========================================================
+21. AI SHOPPING LIST
+========================================================
+
+Create:
+
+POST /api/ai/shopping-list
+
+Request:
+
+{
+    "people": 4,
+    "days": 7,
+    "budget": 2500,
+    "diet": "vegetarian",
+    "requirements": "Indian meals"
+}
+
+The AI should generate a grocery list.
+
+IMPORTANT:
+
+After AI generates recommendations, attempt to match recommendations with products in MongoDB.
+
+Return:
+
+{
+    "shopping_list": [
+        {
+            "product_id": "...",
+            "name": "Rice",
+            "quantity": 5,
+            "unit": "kg",
+            "price": 420
+        }
+    ],
+    "estimated_total": 1800
+}
+
+Do not blindly trust AI prices.
+
+Use actual database prices.
+
+========================================================
+22. AI RECOMMENDATION ROUTE
+========================================================
+
+Create:
+
+POST /api/ai/recommendations
+
+Request:
+
+{
+    "user_id": "..."
+}
+
+Get user's recent orders.
+
+Send relevant purchased products to OpenRouter.
+
+Ask AI to recommend complementary grocery products.
+
+Then match recommendations against MongoDB products.
+
+Return actual products.
+
+========================================================
+23. NATURAL LANGUAGE SEARCH
+========================================================
+
+Create:
+
+POST /api/ai/search
+
+Request:
+
+{
+    "query": "show me dairy products below 100 rupees"
+}
+
+AI should convert the request into structured intent.
+
+Expected internal structure:
+
+{
+    "category": "Dairy",
+    "max_price": 100,
+    "keywords": []
+}
+
+Then query MongoDB.
+
+IMPORTANT:
+
+Never allow AI to generate and execute raw MongoDB queries.
+
+Only use validated fields:
+
+category
+min_price
+max_price
+keywords
+
+========================================================
+24. AI ERROR HANDLING
+========================================================
+
+If OpenRouter fails:
+
+Return:
+
+HTTP 503
+
+{
+    "detail": "AI service is temporarily unavailable"
+}
+
+Do not expose:
+
+API keys
+internal exceptions
+stack traces
+
+Set reasonable HTTP timeout.
+
+Handle:
+
+401
+429
+500
+503
+network errors
+
+========================================================
+25. MONGODB OBJECTID HANDLING
+========================================================
+
+FastAPI cannot directly return ObjectId.
+
+Create helper functions to convert:
+
+ObjectId → string
+
+before returning MongoDB documents.
+
+Never expose raw ObjectId objects in JSON.
+
+========================================================
+26. VALIDATION
+========================================================
+
+Use Pydantic models.
+
+Validate:
+
+Email
+Price
+Stock
+Quantity
+Rating
+Required fields
+
+Return clear FastAPI validation errors.
+
+========================================================
+27. CORS
+========================================================
+
+Enable CORS for development.
+
+Allow:
+
+http://localhost:3000
+http://localhost:5173
+http://localhost:8080
+http://localhost:8081
+
+Make it easy to change later.
+
+========================================================
+28. HEALTH CHECK
+========================================================
+
+Create:
+
+GET /api/health
+
+Response:
+
+{
+    "status": "ok",
+    "service": "SmartCart Backend"
+}
+
+Also create:
+
+GET /api/health/db
+
+Test MongoDB Atlas connection.
+
+Response:
+
+{
+    "status": "ok",
+    "database": "MongoDB Atlas connected"
+}
+
+========================================================
+29. FASTAPI SWAGGER
+========================================================
+
+Use FastAPI automatic documentation.
+
+Swagger:
+
+/docs
+
+ReDoc:
+
+/redoc
+
+Make sure every route has:
+
+- summary
+- description
+- request model
+- response model
+
+========================================================
+30. SEED DATA
+========================================================
+
+Create a seed script:
+
+seed.py
+
+Insert at least:
+
+2 users
+10 categories
+30 products
+
+Admin:
+
+email:
+admin@smartcart.com
+
+password:
+Admin@123
+
+Customer:
+
+email:
+customer@smartcart.com
+
+password:
+Customer@123
+
+DO NOT hash these passwords.
+
+Make seed script safe.
+
+If records already exist, do not create duplicates.
+
+========================================================
+31. REQUIREMENTS.TXT
+========================================================
+
+Create requirements.txt with all required dependencies.
+
+At minimum:
+
+fastapi
+uvicorn
+pymongo
+pydantic
+pydantic-settings
+python-dotenv
+httpx
+email-validator
+
+Use compatible versions.
+
+========================================================
+32. RUNNING THE BACKEND
+========================================================
+
+The backend must run with:
+
+uvicorn app.main:app --reload
+
+Default:
+
+http://localhost:8000
+
+Swagger:
+
+http://localhost:8000/docs
+
+========================================================
+33. README
+========================================================
+
+Create a complete README.
+
+Include:
+
+Project overview
+Features
+Architecture
+Requirements
+MongoDB Atlas setup
+.env setup
+OpenRouter setup
+Installation
+Running locally
+Seeding database
+API documentation
+Swagger URL
+Example API requests
+Troubleshooting
+
+========================================================
+34. MONGODB ATLAS SETUP IN README
+========================================================
+
+Explain:
+
+1. Create MongoDB Atlas cluster.
+2. Create database user.
+3. Add IP address.
+4. Copy connection string.
+5. Put connection string into:
+
+MONGODB_URI=
+
+Example:
+
+MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/
+
+Do not put actual credentials into README.
+
+========================================================
+35. IMPORTANT: DO NOT BUILD FRONTEND
+========================================================
+
+DO NOT create:
+
+React
+Vite
+HTML frontend
+CSS
+Tailwind
+Frontend components
+
+The ONLY deliverable is the backend.
+
+The backend must be fully testable through:
+
+Swagger
+Postman
+curl
+
+========================================================
+36. MINIMAL CONDITION
+========================================================
+
+Do not unnecessarily implement:
+
+Microservices
+Redis
+Kafka
+WebSockets
+Payment gateway
+Email service
+File storage
+Complex authentication
+Complex recommendation engines
+
+Keep the implementation simple.
+
+Focus on making every core API actually work.
+
+========================================================
+37. TEST EVERYTHING
+========================================================
+
+After creating the backend:
+
+1. Install dependencies.
+2. Load .env.
+3. Connect to MongoDB Atlas.
+4. Run seed.py.
+5. Start FastAPI.
+6. Open /docs.
+7. Test health endpoint.
+8. Test registration.
+9. Test login.
+10. Test category CRUD.
+11. Test product CRUD.
+12. Test product search.
+13. Test cart.
+14. Test order creation.
+15. Test order retrieval.
+16. Test admin dashboard.
+17. Test OpenRouter connection.
+18. Test AI chat.
+19. Test AI shopping list.
+20. Test AI recommendations.
+21. Test AI natural-language search.
+
+Fix all Python errors, MongoDB errors, Pydantic errors and API errors before finishing.
+
+========================================================
+38. FINAL OUTPUT
+========================================================
+
+When finished, show me:
+
+1. Complete folder structure.
+2. All created files.
+3. How to install dependencies.
+4. How to configure .env.
+5. How to connect MongoDB Atlas.
+6. How to seed the database.
+7. How to start FastAPI.
+8. Swagger URL.
+9. All API routes.
+10. Example requests.
+11. Example responses.
+12. How to test OpenRouter.
+13. Any remaining configuration required.
+
+DO NOT BUILD FRONTEND.
+
+DO NOT STOP AT PARTIAL CODE.
+
+BUILD A COMPLETE MINIMAL WORKING BACKEND.
