@@ -51,10 +51,10 @@ const ProductDetails = () => {
       <div className={styles.container}>
         <div className={styles.imageSection}>
           <img 
-            src={product.image_url || `https://source.unsplash.com/600x600/?grocery,${encodeURIComponent(product.name)}`} 
+            src={product.image_url || '/placeholder.png'} 
             alt={product.name} 
             className={styles.image}
-            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600'; }}
+            onError={(e) => { e.target.src = '/placeholder.png'; }}
           />
         </div>
         

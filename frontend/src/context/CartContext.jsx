@@ -1,17 +1,18 @@
 import React, { createContext, useState, useEffect } from 'react';
 import * as cartService from '../services/cartService';
-import { getCurrentUser } from '../services/authService';
+import { getCurrentUser, getCartUserId } from '../services/authService';
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(null);
   const user = getCurrentUser();
+  const cartUserId = getCartUserId();
 
   const fetchCart = async () => {
-    if (user) {
+    if (cartUserId) {
       try {
-        const data = await cartService.getCart(user.id);
+        const data = await cartService.getCart(cartUserId);
         setCart(data);
       } catch (error) {
         console.error("Failed to fetch cart", error);
@@ -21,29 +22,29 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     fetchCart();
-  }, [user?.id]);
+  }, [cartUserId]);
 
   const addToCart = async (productId, quantity = 1) => {
-    if (!user) return alert("Please login to add to cart");
-    await cartService.addToCart(user.id, productId, quantity);
+    if (!cartUserId) return;
+    await cartService.addToCart(cartUserId, productId, quantity);
     await fetchCart();
   };
 
   const removeFromCart = async (productId) => {
-    if (!user) return;
-    await cartService.removeCartItem(user.id, productId);
+    if (!cartUserId) return;
+    await cartService.removeCartItem(cartUserId, productId);
     await fetchCart();
   };
 
   const updateQuantity = async (productId, quantity) => {
-    if (!user) return;
-    await cartService.updateCartItem(user.id, productId, quantity);
+    if (!cartUserId) return;
+    await cartService.updateCartItem(cartUserId, productId, quantity);
     await fetchCart();
   };
 
   const clearCart = async () => {
-    if (!user) return;
-    await cartService.clearCart(user.id);
+    if (!cartUserId) return;
+    await cartService.clearCart(cartUserId);
     await fetchCart();
   };
 

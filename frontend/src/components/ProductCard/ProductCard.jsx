@@ -24,7 +24,7 @@ const ProductCard = ({ product, onAdd }) => {
       <button className={styles.wishlistBtn}><Heart size={18} /></button>
       
       <Link to={`/products/${id}`} className={styles.imageContainer}>
-        <img src={image_url || `https://source.unsplash.com/400x400/?grocery,${encodeURIComponent(name)}`} alt={name} className={styles.image} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=400'; }} />
+        <img src={image_url || '/placeholder.png'} alt={name} className={styles.image} onError={(e) => { e.target.src = '/placeholder.png'; }} />
       </Link>
       
       <div className={styles.content}>

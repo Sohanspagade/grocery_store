@@ -23,7 +23,7 @@ const Header = () => {
         <div className={styles.promoContent}>
           <span>Call Us: +123-456-789</span>
           <span className={styles.promoCenter}>Sign up and GET 25% OFF for your first order.</span>
-          <Link to="/login" className={styles.signUpLink}>Sign up now</Link>
+          <Link to="/signup" className={styles.signUpLink}>Sign up now</Link>
         </div>
       </div>
 
